@@ -21,6 +21,10 @@ func New(logger *log.Logger) *Authentication {
 	}
 }
 
+func (a *Authentication) GetLogger() *log.Logger {
+	return a.Logger
+}
+
 func (a *Authentication) ValidateToken(c *gin.Context) (bool, error) {
 	claims := &jwttokens.Claims{}
 
@@ -51,7 +55,7 @@ func (a *Authentication) GenerateToken(req models.GenerateTokenRequest) (string,
 	return jwttokens.GenerateToken(req.Id, req.Name)
 }
 
-func (a *Authentication) ExtractIdFromToken(c *gin.Context) (int, error) {
+func (a *Authentication) ExtractAuthorIdFromToken(c *gin.Context) (int, error) {
 	token, err := extractToken(c)
 	if err != nil {
 		return 0, err
