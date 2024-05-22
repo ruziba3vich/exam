@@ -37,6 +37,20 @@ func (r *Request) GetContext() *context.Context {
 	return r.ctx
 }
 
+type GetProfileRequest struct {
+	Id int
+}
+
+type UpdateBirthdateRequest struct {
+	Id        int
+	Birthdate time.Time
+}
+
+type UpdateBiographyRequest struct {
+	Id        int    `json:"id"`
+	Biography string `json:"biography"`
+}
+
 type CreateBookRequest struct {
 	Request
 }

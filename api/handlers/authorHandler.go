@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/k0kubun/pp"
 	"github.com/ruziba3vich/exam/internal/models"
 	"github.com/ruziba3vich/exam/internal/repositories"
 )
@@ -87,6 +88,68 @@ func (a *handler) LogIn(c *gin.Context) {
 	})
 }
 
+func (a *handler) UpdateBiography(c *gin.Context) {
+	id, err := a.auth.ExtractAuthorIdFromToken(c)
+	if err != nil {
+		printError(http.StatusBadRequest, err, c, a.auth.GetLogger())
+		return
+	}
+
+	var request models.UpdateBiographyRequest
+	if err := c.ShouldBindJSON(&request); err != nil {
+		printError(http.StatusBadRequest, err, c, a.auth.GetLogger())
+		return
+	}
+	request.Id = id
+	response, err := a.storage.UpdateBiography(request)
+	if err != nil {
+		printError(http.StatusBadRequest, err, c, a.auth.GetLogger())
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, response)
+}
+
+func (a *handler) UpdateBirthdate(c *gin.Context) {
+	id, err := a.auth.ExtractAuthorIdFromToken(c)
+	if err != nil {
+		printError(http.StatusBadRequest, err, c, a.auth.GetLogger())
+		return
+	}
+
+	var request models.UpdateBirthdateRequest
+	if err := c.ShouldBindJSON(&request); err != nil {
+		printError(http.StatusBadRequest, err, c, a.auth.GetLogger())
+		return
+	}
+	request.Id = id
+	response, err := a.storage.UpdateBirthdate(request)
+	if err != nil {
+		printError(http.StatusBadRequest, err, c, a.auth.GetLogger())
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, response)
+}
+
+func (a *handler) GetProfile(c *gin.Context) {
+	id, err := a.auth.ExtractAuthorIdFromToken(c)
+	if err != nil {
+		pp.Println(err, "1111111111111111111111")
+		printError(http.StatusBadRequest, err, c, a.auth.GetLogger())
+		return
+	}
+
+	response, err := a.storage.GetProfile(models.GetProfileRequest{Id: id})
+	if err != nil {
+		pp.Println(err, "33333333333333333333333")
+		printError(http.StatusBadRequest, err, c, a.auth.GetLogger())
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, response)
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 var defaultPage int
@@ -113,11 +176,13 @@ func (h *handler) CreateBookHandler(c *gin.Context) {
 	}
 	request.SetName(name)
 	if err := c.ShouldBindJSON(&request); err != nil {
+		pp.Println(err)
 		printError(http.StatusBadRequest, err, c, h.auth.GetLogger())
 		return
 	}
 	result, err := h.storage.CreateBook(request)
 	if err != nil {
+		pp.Println(err)
 		printError(http.StatusBadRequest, err, c, h.auth.GetLogger())
 		return
 	}

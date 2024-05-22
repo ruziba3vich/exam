@@ -3,12 +3,42 @@ package models
 import "time"
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////
+type GetProfileResponse struct {
+	Id        int       `json:"id"`
+	Name      string    `json:"name"`
+	Password  string    `json:"password"`
+	Biography string    `json:"biography"`
+	BirthDate time.Time `json:"birth_date"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
 type RegisterResponse struct {
 	Id       int    `json:"id"`
 	Name     string `json:"name"`
 	Password string `json:"password"`
 	// Biography string    `json:"biography"`
 	// BirthDate time.Time `json:"birth_date"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+type UpdateBiographyResponse struct {
+	Id        int    `json:"id"`
+	Name      string `json:"name"`
+	Password  string `json:"password"`
+	Biography string `json:"biography"`
+	// BirthDate time.Time `json:"birth_date"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+type UpdateBirthdateResponse struct {
+	Id       int    `json:"id"`
+	Name     string `json:"name"`
+	Password string `json:"password"`
+	// Biography string `json:"biography"`
+	BirthDate time.Time `json:"birth_date"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }

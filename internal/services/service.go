@@ -35,6 +35,14 @@ func (s *Service) DeleteBookById(bookId int) (*models.DeletedBookResponse, error
 	return s.storage.DeleteBookById(bookId)
 }
 
+func (s *Service) UpdateBiography(req models.UpdateBiographyRequest) (*models.UpdateBiographyResponse, error) {
+	return s.storage.UpdateBiography(req)
+}
+
+func (s *Service) UpdateBirthdate(req models.UpdateBirthdateRequest) (*models.UpdateBirthdateResponse, error) {
+	return s.storage.UpdateBirthdate(req)
+}
+
 /*
 	CreateBook(models.CreateBookRequest) (models.CreatedBookResponse, error)
 	GetAllBooks() ([]models.Response, error)

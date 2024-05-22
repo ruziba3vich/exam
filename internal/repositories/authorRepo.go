@@ -9,4 +9,7 @@ type IAuthorRepository interface {
 	UpdateBookById(models.UpdateBookRequest) (*models.UpdatedBookResponse, error)
 	DeleteBookById(int) (*models.DeletedBookResponse, error)
 	// GetBooksByAuthor(int) ([]models.Request, error)
+	UpdateBiography(models.UpdateBiographyRequest) (*models.UpdateBiographyResponse, error)
+	UpdateBirthdate(models.UpdateBirthdateRequest) (*models.UpdateBirthdateResponse, error)
+	GetProfile(models.GetProfileRequest) (*models.GetProfileResponse, error)
 }
