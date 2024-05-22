@@ -12,4 +12,6 @@ type IAuthorRepository interface {
 	UpdateBiography(models.UpdateBiographyRequest) (*models.UpdateBiographyResponse, error)
 	UpdateBirthdate(models.UpdateBirthdateRequest) (*models.UpdateBirthdateResponse, error)
 	GetProfile(models.GetProfileRequest) (*models.GetProfileResponse, error)
+	GetAllAuthors() ([]models.GetProfileResponse, error)
+	GetAuthorById(id uint) (*models.GetProfileResponse, error)
 }

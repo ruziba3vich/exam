@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"database/sql"
 	"time"
 
 	"github.com/ruziba3vich/exam/internal/models"
@@ -104,6 +105,33 @@ func (s *Storage) GetProfile(req models.GetProfileRequest) (*models.GetProfileRe
 		&response.CreatedAt,
 		&response.UpdatedAt,
 	); err != nil {
+		return nil, err
+	}
+	return &response, nil
+}
+
+func (s *Storage) DeleteAuthor(id int) (*models.DeleteAuthorResponse, error) {
+	query := `
+		UPDATE Authors
+		SET is_deleted = true
+		WHERE id = $1
+		RETURNING id, name, password, biography, birthdate, created_at;
+	`
+	ctx, cancel := getContext(s.ctx)
+	defer cancel()
+	row := s.db.QueryRowContext(ctx, query, id)
+	var response models.DeleteAuthorResponse
+	if err := row.Scan(
+		&response.Id,
+		&response.Name,
+		&response.Password,
+		&response.Biography,
+		&response.BirthDate,
+		&response.CreatedAt,
+	); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
 		return nil, err
 	}
 	return &response, nil

@@ -13,6 +13,10 @@ type GetProfileResponse struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
+type DeleteAuthorResponse struct {
+	GetProfileResponse
+}
+
 type RegisterResponse struct {
 	Id       int    `json:"id"`
 	Name     string `json:"name"`

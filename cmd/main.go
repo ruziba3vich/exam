@@ -14,7 +14,7 @@ func main() {
 	db, e := storage.DB()
 	if e != nil {
 		log.Println(e)
-		log.Fatal("---------DB connection could not be set --------------------")
+		// log.Fatal("---------DB connection could not be set --------------------")
 	}
 	ctx := context.Background()
 	logger := log.New(os.Stdout, "app : ", log.Flags())

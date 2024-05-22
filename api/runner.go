@@ -27,15 +27,17 @@ func New(api API) *gin.Engine {
 
 	router.GET("/", handler.GetProfile)
 
-	router.POST("/create-book", handler.CreateBookHandler)
+	router.POST("/create/book", handler.CreateBookHandler)
 	router.POST("/register", handler.Register)
-	router.POST("/log-in", handler.LogIn)
-	router.GET("/get-all-books/", handler.GetAllBooksHandler)
-	router.GET("/get-book-by/:id", handler.GetBookById)
-	router.PUT("/update-book-by/:id", handler.UpdateBookById)
-	router.PUT("/update-birthdate/:id", handler.UpdateBirthdate)
-	router.PUT("/update-biography/:id", handler.UpdateBiography)
-	router.DELETE("/delete-book-by/:id", handler.DeleteBookById)
+	router.POST("/login", handler.LogIn)
+	router.GET("/authors", handler.GetAllAuthors)
+	router.GET("/authors/:id", handler.GetAuthorById)
+	router.GET("/books/", handler.GetAllBooksHandler)
+	router.GET("/books/:id", handler.GetBookById)
+	router.PUT("/update/book/:id", handler.UpdateBookById)
+	router.PUT("/update/birthdate/:id", handler.UpdateBirthdate)
+	router.PUT("/update/biography/:id", handler.UpdateBiography)
+	router.DELETE("/delete/book/:id", handler.DeleteBookById)
 
 	return router
 }

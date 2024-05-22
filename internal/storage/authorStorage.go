@@ -43,6 +43,7 @@ func (s *Storage) GetAllBooks(pagination, limit int) (results []models.Response,
 	INNER JOIN Authors a
 	ON a.id = b.author_id
 	WHERE b.is_deleted = false
+	ORDER BY b.id;
 	`
 
 	timeout, _ := strconv.Atoi(os.Getenv("TIMEOUT"))
@@ -407,6 +408,83 @@ func (s *Storage) DeleteBookById(bookId int) (*models.DeletedBookResponse, error
 		}
 	}
 
+	return &response, nil
+}
+
+func (s *Storage) GetAllAuthors() ([]models.GetProfileResponse, error) {
+	query := `
+		SELECT
+			id,
+			name,
+			password,
+			biography,
+			birthdate,
+			created_at,
+			updated_at
+		FROM Authors;
+	`
+	ctx, cancel := getContext(s.ctx)
+	defer cancel()
+	rows, err := s.db.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var response []models.GetProfileResponse
+
+	for rows.Next() {
+		var object models.GetProfileResponse
+		if err := rows.Scan(
+			&object.Id,
+			&object.Name,
+			&object.Password,
+			&object.Biography,
+			&object.BirthDate,
+			&object.CreatedAt,
+			&object.UpdatedAt); err != nil {
+			return nil, err
+		}
+		response = append(response, object)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
+func (s *Storage) GetAuthorById(id uint) (*models.GetProfileResponse, error) {
+	query := `
+		SELECT
+			id,
+			name,
+			password,
+			biography,
+			birthdate,
+			created_at,
+			updated_at
+		FROM Authors
+		WHERE id = $1 AND is_deleted = false;
+	`
+	ctx, cancel := getContext(s.ctx)
+	defer cancel()
+	row := s.db.QueryRowContext(ctx, query, id)
+
+	var response models.GetProfileResponse
+
+	if err := row.Scan(
+		&response.Id,
+		&response.Name,
+		&response.Password,
+		&response.Biography,
+		&response.BirthDate,
+		&response.CreatedAt,
+		&response.UpdatedAt,
+	); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, err
+	}
 	return &response, nil
 }
 

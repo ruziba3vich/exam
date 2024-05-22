@@ -150,6 +150,29 @@ func (a *handler) GetProfile(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, response)
 }
 
+func (a *handler) GetAllAuthors(c *gin.Context) {
+	response, err := a.storage.GetAllAuthors()
+	if err != nil {
+		printError(http.StatusBadRequest, err, c, a.auth.GetLogger())
+		return
+	}
+	c.IndentedJSON(http.StatusOK, response)
+}
+
+func (a *handler) GetAuthorById(c *gin.Context) {
+	id, err := a.auth.ExtractAuthorIdFromToken(c)
+	if err != nil {
+		printError(http.StatusBadRequest, err, c, a.auth.GetLogger())
+		return
+	}
+	response, err := a.storage.GetAuthorById(uint(id))
+	if err != nil {
+		printError(http.StatusBadRequest, err, c, a.auth.GetLogger())
+		return
+	}
+	c.IndentedJSON(http.StatusOK, response)
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 var defaultPage int
