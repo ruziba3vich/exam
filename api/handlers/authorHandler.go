@@ -35,11 +35,13 @@ func NewHandler(h *HandlerConfig) *handler {
 func (a *handler) Register(c *gin.Context) {
 	var req models.RegisterRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
+		log.Println("11111111111111111111")
 		printError(http.StatusBadRequest, err, c, a.auth.GetLogger())
 		return
 	}
 	response, err := a.authService.Register(req)
 	if err != nil {
+		log.Println("222222222222222222222222")
 		printError(http.StatusBadRequest, err, c, a.auth.GetLogger())
 		return
 	}
@@ -49,6 +51,7 @@ func (a *handler) Register(c *gin.Context) {
 			Name: response.Name,
 		})
 	if err != nil {
+		log.Println("333333333333333333333333")
 		printError(http.StatusBadRequest, err, c, a.auth.GetLogger())
 		return
 	}
@@ -102,7 +105,7 @@ func (h *handler) CreateBookHandler(c *gin.Context) {
 		printError(http.StatusUnauthorized, err, c, h.auth.GetLogger())
 		return
 	}
-	request.SetId(id)
+	request.AuthorId = id
 	name, err := h.auth.ExtractAuthorNameFromToken(c)
 	if err != nil {
 		printError(http.StatusUnauthorized, err, c, h.auth.GetLogger())

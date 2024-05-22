@@ -23,7 +23,7 @@ func (s *Service) GetAllBooks(pagination, limit int) ([]models.Response, error) 
 	return s.storage.GetAllBooks(pagination, limit)
 }
 
-func (s *Service) GetBookById(bookId int) (*models.Response, error) {
+func (s *Service) GetBookById(bookId int) (*models.GetBookByIdResponse, error) {
 	return s.storage.GetBookById(bookId)
 }
 

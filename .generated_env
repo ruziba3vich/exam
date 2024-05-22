@@ -1,0 +1,1 @@
+DB_URL=postgres://postgres:Dost0n1k@localhost:5432/exam?sslmode=disable

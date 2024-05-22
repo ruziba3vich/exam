@@ -10,10 +10,11 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func DB() *sql.DB {
-	err := godotenv.Load()
+func DB() (*sql.DB, error) {
+	err := godotenv.Load("../.env")
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Println("Error loading .env file")
+		return nil, err
 	}
 
 	host := os.Getenv("DB_HOST")
@@ -29,7 +30,13 @@ func DB() *sql.DB {
 	psqlConn, err := sql.Open("postgres", psqlUrl)
 	if err != nil {
 		log.Fatal("Failed to connect to database: ", err)
+		return nil, err
 	}
 
-	return psqlConn
+	if err := psqlConn.Ping(); err != nil {
+		log.Println("error while connecting to the database")
+		return nil, err
+	}
+	log.Println("connection to the database has been created")
+	return psqlConn, nil
 }
